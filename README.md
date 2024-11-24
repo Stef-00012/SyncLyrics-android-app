@@ -1,50 +1,21 @@
-# Welcome to your Expo app 👋
+# SyncLyrics Android App
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+SyncLyrics is an app for Android which fetches the song you're listening to on Spotify and shows its synced lyrics from multiple sources ([Musixmatch](https://musixmatch.com), [Lrclib.net](https://lrclib.net) and [Netease](https://music.163.com/)).
 
-## Get started
+## Installation
 
-1. Install dependencies
+Just download the APK from the github [action artifact](https://github.com/Stef-00012/SyncLyrics-android-app/actions/runs/11994897595/artifacts/2229401975) (This link might be outdated, to get the newest build check the latest APK build action).
 
-   ```bash
-   npm install
-   ```
+## Build
 
-2. Start the app
+If you want to build the app yourself,
 
-   ```bash
-    npx expo start
-   ```
+> [!NOTE]
+> You must have an Expo account and install Java and Android SDK
 
-In the output, you'll find options to open the app in a
+1. Install eas CLI, `npm i -g eas-cli`
+2. Run the build command, `eas build --clear-cache --platform android --profile preview --local` (You can also remove `--local` to build it on expo server instead of your local PC).
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Setup
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+After installation you must create an app on spotify and add your own client ID and client secret in the settings, once you added them, restart the app for it to start working.
