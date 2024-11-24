@@ -7,6 +7,7 @@ import {
 } from "react-native";
 import React, { useRef, useEffect, useState } from "react";
 import type { FormattedLyric } from "@stef-0012/synclyrics";
+import getStyles from "@/assets/styles/lyrics";
 
 type Props = {
 	lyrics: Array<FormattedLyric> | null | undefined;
@@ -27,47 +28,12 @@ export default function Lyrics({
 	progress,
 	lyrics,
 }: Props) {
-	const styles = StyleSheet.create({
-		lyricsContainer: {
-			flex: 1,
-			justifyContent: "center",
-		},
-
-		missingText: {
-			fontFamily: "Arimo-Nerd-Font",
-			color: "#fff",
-			fontSize: 30,
-			fontWeight: "bold",
-			alignItems: "center"
-		},
-
-		previousLyrics: {
-			fontFamily: "Arimo-Nerd-Font",
-			fontSize: Number.parseFloat(lyricsFontSize) || 20,
-			color: previousLyricsColor || "#302f2f",
-			fontWeight: "semibold",
-			marginTop: 2.5,
-			marginBottom: 2.5,
-		},
-
-		currentLyric: {
-			fontFamily: "Arimo-Nerd-Font",
-			fontSize: (Number.parseFloat(lyricsFontSize) || 20) * 1.4,
-			color: currentLyricColor || "#1ed760",
-			fontWeight: "bold",
-			marginTop: 2.5,
-			marginBottom: 2.5,
-		},
-
-		nextLyrics: {
-			fontFamily: "Arimo-Nerd-Font",
-			fontSize: Number.parseFloat(lyricsFontSize) || 20,
-			fontWeight: "semibold",
-			color: nextLyricsColor || "#fff",
-			marginTop: 2.5,
-			marginBottom: 2.5,
-		},
-	});
+	const styles = getStyles({
+		lyricsFontSize,
+		previousLyricsColor,
+		currentLyricColor,
+		nextLyricsColor
+	})
 
 	const scrollViewRef = useRef<ScrollView>(null);
 	const [currentLyricY, setCurrentLyricY] = useState<number>(0);

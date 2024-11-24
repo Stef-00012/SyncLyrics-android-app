@@ -6,6 +6,7 @@ import type {
 	AuthRequestPromptOptions,
 	AuthSessionResult,
 } from "expo-auth-session";
+import getStyles from "@/assets/styles/lyricsContainer";
 
 type Props = {
 	lyrics: Array<FormattedLyric> | null | undefined;
@@ -34,32 +35,9 @@ export default function LyricsContainer({
 	progress,
 	lyrics,
 }: Props) {
-	const styles = StyleSheet.create({
-		mainContent: {
-			marginTop: headerHeight,
-			padding: 10,
-		},
-
-		spotifyLoginButtonContainer: {
-			flex: 1,
-			justifyContent: "center",
-		},
-
-		spotifyLoginButton: {
-			backgroundColor: "#1ed760",
-			borderRadius: 20,
-			padding: 12,
-			alignItems: "center",
-			justifyContent: "center",
-		},
-
-		spotifyLoginText: {
-			fontFamily: "Arimo-Nerd-Font",
-			color: "#000000",
-			fontSize: 25,
-			fontWeight: "bold",
-		},
-	});
+	const styles = getStyles({
+		headerHeight
+	})
 
 	return (
 		<View style={styles.mainContent}>
