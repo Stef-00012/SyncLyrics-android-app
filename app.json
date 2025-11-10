@@ -24,6 +24,10 @@
       },
       "package": "com.stefdp.synclyrics"
     },
+    "androidStatusBar.barStyle": {
+      "backgroundColor": "#121212",
+      "barStyle": "light-content"
+    },
     "web": {
       "bundler": "metro",
       "output": "static",

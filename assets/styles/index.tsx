@@ -33,7 +33,7 @@ export default function getStyles({
 			marginTop: 7.5,
 		},
 
-		infoInputTitleContainer: {
+		groupedSettings: {
 			flexDirection: "row",
 			alignItems: "center",
 		},
@@ -132,5 +132,13 @@ export default function getStyles({
 			textDecorationLine: "underline",
 			color: "#1ed760",
 		},
+
+		colorPickerToggle: {
+			borderRadius: 6,
+			padding: 12,
+			marginLeft: 7,
+			alignItems: "center",
+			justifyContent: "center",
+		}
 	});
 }

@@ -18,4 +18,4 @@ If you want to build the app yourself,
 
 ## Setup
 
-After installation you must create an app on spotify and add your own client ID and client secret in the settings, once you added them, restart the app for it to start working.
+After installation you must create an app on spotify and add your own client ID and client secret in the settings, once you added them, restart the app for it to start working.// Edited at 2024-11-25T13:07:45.654Z

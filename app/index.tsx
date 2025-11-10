@@ -1,15 +1,4 @@
-import {
-	SyncLyrics,
-	type TokenData,
-	type FormattedLyric,
-} from "@stef-0012/synclyrics";
-import {
-	Text,
-	View,
-	TextInput,
-	StatusBar,
-	Alert,
-} from "react-native";
+import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
 import { RootSiblingParent } from "react-native-root-siblings";
 import MaterialIcons from "@expo/vector-icons/MaterialIcons";
 import LyricsContainer from "@/components/LyricsContainer";
@@ -24,12 +13,26 @@ import Toast from "react-native-root-toast";
 import * as db from "@/functions/database";
 import Header from "@/components/Header";
 import { useFonts } from "expo-font";
+import { Link } from "expo-router";
 import {
 	ClickOutsideProvider,
 	useClickOutside,
 } from "react-native-click-outside";
-import { makeRedirectUri, useAuthRequest } from "expo-auth-session";
-import { Link } from "expo-router";
+import {
+	SyncLyrics,
+	type TokenData,
+	type FormattedLyric,
+} from "@stef-0012/synclyrics";
+import {
+	Text,
+	View,
+	TextInput,
+	// StatusBar,
+	Modal,
+	Button,
+	Alert,
+} from "react-native";
+import CustomColorPicker from "@/components/ColorPicker";
 
 interface SpotifyArtist {
 	external_urls: {
@@ -115,6 +118,12 @@ export default function Index() {
 	const [settingsSpotifyClientSecret, setSettingsSpotifyClientSecret] =
 		useState<string | null>(spotifyClientSecret);
 	let _spotifyClientSecret: string | null = spotifyClientSecret;
+
+	const [showCurrentLyricColorPicker, setShowCurrentLyricColorPicker] = useState<boolean>(false);
+	const [showPreviousLyricsColorPicker, setShowPreviousLyricsColorPicker] = useState<boolean>(false);
+	const [showNextLyricsColorPicker, setShowNextLyricsColorPicker] = useState<boolean>(false);
+	const [showBackgroundColorPicker, setShowBackgroundColorPicker] = useState<boolean>(false);
+	const [showHeaderColorPicker, setShowHeaderColorPicker] = useState<boolean>(false);
 
 	const [
 		instrumentalLyricIndicatorTooltipVisible,
@@ -536,13 +545,13 @@ export default function Index() {
 
 	const styles = getStyles({
 		backgroundColor,
-		headerHeight
-	})
+		headerHeight,
+	});
 
 	return (
 		<ClickOutsideProvider>
 			<RootSiblingParent>
-				<StatusBar hidden={true} />
+				{/* <StatusBar hidden={true} /> */}
 				<View style={styles.container}>
 					<Header
 						lyrics={lyrics}
@@ -598,12 +607,12 @@ export default function Index() {
 					)}
 
 					<SettingsModal
-						isVisible={showSettings}
+						isVisible={true}
 						onClose={() => setShowSettings(false)}
 						closeSettingsRef={closeSettingsRef}
 					>
 						<View style={styles.modalContent}>
-							<View style={styles.infoInputTitleContainer}>
+							<View style={styles.groupedSettings}>
 								<Text style={styles.inputTitle}>
 									Instrumental Lyric Indicator:
 								</Text>
@@ -653,59 +662,111 @@ export default function Index() {
 								placeholderTextColor="#aaa"
 							/>
 
-							<Text style={styles.inputTitle}>Current Lyric Color:</Text>
-							<TextInput
-								style={styles.textInput}
-								value={settingsCurrentLyricColor}
-								onChangeText={(content) => {
-									setSettingsCurrentLyricColor(content);
+							<View style={styles.groupedSettings}>
+								<Text style={styles.inputTitle}>
+								Current Lyric Color:
+								</Text>
+								<Pressable
+									style={{...styles.colorPickerToggle, backgroundColor: settingsCurrentLyricColor}}
+									onPress={() => {
+										setShowCurrentLyricColorPicker(true);
+									}}
+								/>
+							</View>
+							<CustomColorPicker
+								visible={showCurrentLyricColorPicker}
+								defaultValue={settingsCurrentLyricColor}
+								onComplete={({ hex }) => {
+									console.log(hex)
+
+									setSettingsCurrentLyricColor(hex);
+
+									setShowCurrentLyricColorPicker(false)
 								}}
-								placeholder="#1ed760"
-								placeholderTextColor="#aaa"
 							/>
 
-							<Text style={styles.inputTitle}>Previous Lyrics Color:</Text>
-							<TextInput
-								style={styles.textInput}
-								value={settingsPreviousLyricsColor}
-								onChangeText={(content) => {
-									setSettingsPreviousLyricsColor(content);
+							<View style={styles.groupedSettings}>
+								<Text style={styles.inputTitle}>
+								Previous Lyrics Color:
+								</Text>
+								<Pressable
+									style={{...styles.colorPickerToggle, backgroundColor: settingsPreviousLyricsColor}}
+									onPress={() => {
+										setShowPreviousLyricsColorPicker(true);
+									}}
+								/>
+							</View>
+							<CustomColorPicker
+								visible={showPreviousLyricsColorPicker}
+								defaultValue={settingsPreviousLyricsColor}
+								onComplete={({ hex }) => {
+									setSettingsPreviousLyricsColor(hex);
+
+									setShowPreviousLyricsColorPicker(false)
 								}}
-								placeholder="#302f2f"
-								placeholderTextColor="#aaa"
 							/>
 
-							<Text style={styles.inputTitle}>Next Lyrics Color:</Text>
-							<TextInput
-								style={styles.textInput}
-								value={settingsNextLyricsColor}
-								onChangeText={(content) => {
-									setSettingsNextLyricsColor(content);
+							<View style={styles.groupedSettings}>
+								<Text style={styles.inputTitle}>
+								Next Lyrics Color:
+								</Text>
+								<Pressable
+									style={{...styles.colorPickerToggle, backgroundColor: settingsNextLyricsColor}}
+									onPress={() => {
+										setShowNextLyricsColorPicker(true);
+									}}
+								/>
+							</View>
+							<CustomColorPicker
+								visible={showNextLyricsColorPicker}
+								defaultValue={settingsNextLyricsColor}
+								onComplete={({ hex }) => {
+									setSettingsNextLyricsColor(hex);
+
+									setShowNextLyricsColorPicker(false)
 								}}
-								placeholder="#fff"
-								placeholderTextColor="#aaa"
 							/>
 
-							<Text style={styles.inputTitle}>Background Color:</Text>
-							<TextInput
-								style={styles.textInput}
-								value={settingsBackgroundColor}
-								onChangeText={(content) => {
-									setSettingsBackgroundColor(content);
+							<View style={styles.groupedSettings}>
+								<Text style={styles.inputTitle}>
+								Background Color:
+								</Text>
+								<Pressable
+									style={{...styles.colorPickerToggle, backgroundColor: settingsBackgroundColor}}
+									onPress={() => {
+										setShowBackgroundColorPicker(true);
+									}}
+								/>
+							</View>
+							<CustomColorPicker
+								visible={showBackgroundColorPicker}
+								defaultValue={settingsBackgroundColor}
+								onComplete={({ hex }) => {
+									setSettingsBackgroundColor(hex);
+
+									setShowBackgroundColorPicker(false)
 								}}
-								placeholder="#121212"
-								placeholderTextColor="#aaa"
 							/>
 
-							<Text style={styles.inputTitle}>Header Color:</Text>
-							<TextInput
-								style={styles.textInput}
-								value={settingsHeaderColor}
-								onChangeText={(content) => {
-									setSettingsHeaderColor(content);
+							<View style={styles.groupedSettings}>
+								<Text style={styles.inputTitle}>
+								Header Color:
+								</Text>
+								<Pressable
+									style={{...styles.colorPickerToggle, headerColor: settingsHeaderColor}}
+									onPress={() => {
+										setShowHeaderColorPicker(true);
+									}}
+								/>
+							</View>
+							<CustomColorPicker
+								visible={showHeaderColorPicker}
+								defaultValue={settingsHeaderColor}
+								onComplete={({ hex }) => {
+									setSettingsHeaderColor(hex);
+
+									setShowHeaderColorPicker(false)
 								}}
-								placeholder="#1a1d21"
-								placeholderTextColor="#aaa"
 							/>
 
 							<Text style={styles.inputTitle}>Spotify Client ID:</Text>
@@ -762,10 +823,7 @@ export default function Index() {
 								</Pressable>
 							</View>
 
-							<Pressable
-								style={styles.saveButton}
-								onPress={saveSettings}
-							>
+							<Pressable style={styles.saveButton} onPress={saveSettings}>
 								<Text>Save</Text>
 							</Pressable>
 						</View>
@@ -803,13 +861,8 @@ export default function Index() {
 			setCurrentLyricColor("#1ed760");
 			db.set("currentLyricColor", "#1ed760");
 		} else {
-			setCurrentLyricColor(
-				settingsCurrentLyricColor || "#1ed760",
-			);
-			db.set(
-				"currentLyricColor",
-				settingsCurrentLyricColor || "#1ed760",
-			);
+			setCurrentLyricColor(settingsCurrentLyricColor || "#1ed760");
+			db.set("currentLyricColor", settingsCurrentLyricColor || "#1ed760");
 		}
 
 		if (!hexRegex.test(settingsPreviousLyricsColor)) {
@@ -822,13 +875,8 @@ export default function Index() {
 			setPreviousLyricsColor("#302f2f");
 			db.set("previousLyricsColor", "#302f2f");
 		} else {
-			setPreviousLyricsColor(
-				settingsPreviousLyricsColor || "#302f2f",
-			);
-			db.set(
-				"previousLyricsColor",
-				settingsPreviousLyricsColor || "#302f2f",
-			);
+			setPreviousLyricsColor(settingsPreviousLyricsColor || "#302f2f");
+			db.set("previousLyricsColor", settingsPreviousLyricsColor || "#302f2f");
 		}
 
 		if (!hexRegex.test(settingsNextLyricsColor)) {
@@ -842,10 +890,7 @@ export default function Index() {
 			db.set("nextLyricsColor", "#fff");
 		} else {
 			setNextLyricsColor(settingsNextLyricsColor || "#fff");
-			db.set(
-				"nextLyricsColor",
-				settingsNextLyricsColor || "#fff",
-			);
+			db.set("nextLyricsColor", settingsNextLyricsColor || "#fff");
 		}
 
 		if (!hexRegex.test(settingsBackgroundColor)) {
@@ -859,10 +904,7 @@ export default function Index() {
 			db.set("backgroundColor", "#121212");
 		} else {
 			setBackgroundColor(settingsBackgroundColor || "#121212");
-			db.set(
-				"backgroundColor",
-				settingsBackgroundColor || "#121212",
-			);
+			db.set("backgroundColor", settingsBackgroundColor || "#121212");
 		}
 
 		if (!hexRegex.test(settingsHeaderColor)) {
@@ -879,13 +921,8 @@ export default function Index() {
 			db.set("headerColor", settingsHeaderColor || "#121212");
 		}
 
-		setInstrumentalLyricIndicator(
-			settingsInstrumentalLyricIndicator,
-		);
-		db.set(
-			"instrumentalLyricIndicator",
-			settingsInstrumentalLyricIndicator,
-		);
+		setInstrumentalLyricIndicator(settingsInstrumentalLyricIndicator);
+		db.set("instrumentalLyricIndicator", settingsInstrumentalLyricIndicator);
 
 		setSpotifyClientID(settingsSpotifyClientID || "");
 		_spotifyClientID = settingsSpotifyClientID || "";
@@ -893,10 +930,7 @@ export default function Index() {
 
 		setSpotifyClientSecret(settingsSpotifyClientSecret || "");
 		_spotifyClientSecret = settingsSpotifyClientSecret || "";
-		db.set(
-			"spotifyClientSecret",
-			settingsSpotifyClientSecret || "",
-		);
+		db.set("spotifyClientSecret", settingsSpotifyClientSecret || "");
 
 		setShowSettings(false);
 	}
